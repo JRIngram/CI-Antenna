@@ -27,7 +27,11 @@ public class Particle {
 	
 	public Particle(AntennaArray array, int antennaNumber, double[] coefficients){
 		RandomSearch rs = new RandomSearch();
-		position = Main.convertDoublePrimitiveArrayToObject(rs.randomGeneration(array, antennaNumber));
+		double[] initialPosition = rs.randomGeneration(array, antennaNumber);
+		while(!array.is_valid(initialPosition)) {
+			initialPosition = rs.randomGeneration(array, antennaNumber);
+		}
+		position = Main.convertDoublePrimitiveArrayToObject(initialPosition);
 		personalBest = new Tuple<Double[], Double>(position, array.evaluate(Main.convertDoubleObjectArrayToPrimitive(position)));
 		Double[] globalBestVector = {0.0, 0.0, 0.0};
 		globalBest = new Tuple<Double[], Double>(globalBestVector, 0.0);
@@ -49,11 +53,6 @@ public class Particle {
 	
 	}
 	
-	private void updatePosition(){
-		searchSpace();
-		velocity = calculateNewVelocity();
-	}
-	
 	public void searchSpace(){
 		for(int i = 0; i < velocity.length; i++) {
 			position[i] = position[i] + velocity[i];
@@ -68,7 +67,7 @@ public class Particle {
 		}
 	}
 	
-	private double[] calculateNewVelocity() {
+	public double[] calculateNewVelocity() {
 		double[] newInertiaVector = calculateInertia();
 		double[] cognitiveAttractionVector = calculateCognitiveAttraction();
 		double[] socialAttractionVector = calculateSocialAttraction();
@@ -96,7 +95,8 @@ public class Particle {
 		Random rng = new Random();
 		double randomness = rng.nextDouble();
 		for(int i = 0; i < personalBest.getItemOne().length; i++) {
-			cognitiveAttraction[i] = cognitiveCoefficient * randomness * (personalBestPosition[i] - position[i]);
+			double singleCognitiveAttraction = cognitiveCoefficient * randomness * (personalBestPosition[i] - position[i]);
+			cognitiveAttraction[i] = singleCognitiveAttraction;
 		}
 		return cognitiveAttraction;
 	}
@@ -107,7 +107,7 @@ public class Particle {
 		Random rng = new Random();
 		double randomness = rng.nextDouble();
 		for(int i = 0; i < globalBest.getItemOne().length; i++) {
-			socialAttraction[i] = cognitiveCoefficient * randomness * (globalBestPosition[i] - position[i]);
+			socialAttraction[i] = socialCoefficient * randomness * (globalBestPosition[i] - position[i]);
 		}
 		return socialAttraction;
 	}

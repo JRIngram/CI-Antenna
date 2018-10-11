@@ -42,6 +42,9 @@ public class ParticleSwarm {
 					System.out.println("[" + j + "] New Global Best " + Main.generateDesignString(globalBest.getItemOne()) + " with a LSS of: " + globalBest.getItemTwo() );
 				}
 			}
+			for(int j = 0; j < swarm.length; j++) {
+				swarm[j].calculateNewVelocity();
+			}
 		}
 		return globalBest;
 	}
