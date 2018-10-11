@@ -42,10 +42,19 @@ public class Particle {
 		velocity = new double[position.length];
 		for(int i = 0; i < velocity.length; i++) {
 			velocity[i] = (position[i] + secondPosition[i]) / 2;
+			if(i == velocity.length - 1) {
+				velocity[i] = 0.0;
+			}
 		}
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 100; i++) {
 			searchSpace();
 			velocity = calculateNewVelocity();
+			if(array.is_valid(Main.convertDoubleObjectArrayToPrimitive(position))) {
+				System.out.println("[" + i + "] " + Main.generateDesignString(position));
+			}
+			if(i % 10000000 == 0) {
+				System.out.println("[" + i + "] " + Main.generateDesignString(position));
+			}
 		}
 		System.out.println("fin");
 	
@@ -72,13 +81,16 @@ public class Particle {
 		double[] newVelocity = new double[velocity.length];
 		for(int i = 0; i < velocity.length; i++) {
 			newVelocity[i] = newInertiaVector[i] + cognitiveAttractionVector[i] + socialAttractionVector[i];
+			if(i + 1 == velocity.length) {
+				newVelocity[i] = 0.0;
+			}
 		}
 		return newVelocity;
 	}
 	
 	private double[] calculateInertia() {
 		double[] newInertia = new double[velocity.length];	
-		for(int i = 0; i < velocity.length; i++) {
+		for(int i = 0; i < velocity.length - 1; i++) {
 			newInertia[i] = velocity[i] * intertiaCoefficient;
 		}
 		return newInertia;
