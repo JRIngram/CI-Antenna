@@ -24,7 +24,7 @@ public class Main {
 	}
 	
 	
-	private static Double[] convertDoubleArrayPrimitiveToObject(double[] primitive) {
+	static Double[] convertDoubleArrayPrimitiveToObject(double[] primitive) {
 		Double[] object = new Double[primitive.length];
 		for(int i = 0; i < object.length; i++) {
 			object[i] = primitive[i];
@@ -32,7 +32,7 @@ public class Main {
 		return object;
 	}
 	
-	private static double[] convertDoubleObjectArrayToPrimitive(Double[] object) {
+	static double[] convertDoubleObjectArrayToPrimitive(Double[] object) {
 		double[] primitive = new double[object.length];
 		for(int i = 0; i < object.length; i++) {
 			primitive[i] =object[i];
