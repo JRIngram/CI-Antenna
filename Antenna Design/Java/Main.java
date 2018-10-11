@@ -22,6 +22,23 @@ public class Main {
 		}
 		return designString;
 	}
+	
+	
+	private static Double[] convertDoubleArrayPrimitiveToObject(double[] primitive) {
+		Double[] object = new Double[primitive.length];
+		for(int i = 0; i < object.length; i++) {
+			object[i] = primitive[i];
+		}
+		return object;
+	}
+	
+	private static double[] convertDoubleObjectArrayToPrimitive(Double[] object) {
+		double[] primitive = new double[object.length];
+		for(int i = 0; i < object.length; i++) {
+			primitive[i] =object[i];
+		}
+		return primitive;
+	}
 
 }
 
