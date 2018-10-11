@@ -2,7 +2,8 @@
 public class ParticleSwarm {
 	
 	private Particle[] swarm;
-	private Tuple<Double[], Double> globalBest;
+	private double[] globalBestDesign;
+	private double globalBestResult;
 	private AntennaArray array;
 	
 	public ParticleSwarm(AntennaArray array, int antennaNumber, double[] coefficients, int size) {
@@ -12,13 +13,16 @@ public class ParticleSwarm {
 		for(int i = 0; i < size; i++) {
 			swarm[i] = new Particle(array, antennaNumber, coefficients);
 		}
-		globalBest = swarm[0].getPersonalBest();
+		
+		globalBestDesign = swarm[0].getPersonalBestDesign();
+		globalBestResult = swarm[0].getPersonalBestResult();
+		System.out.println("[0] New Global Best " + globalBestDesign + " with a LSS of: " + globalBestResult );
 		
 		//Checks which Swarm has the initial best.
 		for(int i = 0; i < size; i++){
-			if(swarm[i].getPersonalBest().getItemTwo() < globalBest.getItemTwo()) {
-				globalBest = swarm[i].getPersonalBest();
-				System.out.println("[0] New Global Best " + Main.generateDesignString(globalBest.getItemOne()) + " with a LSS of: " + globalBest.getItemTwo() );
+			if(swarm[i].getPersonalBestResult() < globalBestResult) {
+				globalBestDesign = swarm[i].getPersonalBestDesign();
+				System.out.println("[0] New Global Best " + globalBestDesign + " with a LSS of: " + globalBestResult );
 			}
 		}
 		updateSwarmsGlobalBest();
@@ -26,26 +30,26 @@ public class ParticleSwarm {
 	
 	private void updateSwarmsGlobalBest() {
 		for(int i = 0; i < swarm.length; i++){
-			swarm[i].setGlobalBest(globalBest);
+			swarm[i].setGlobalBest(globalBestDesign, globalBestResult);
 		}
 	}
 	
-	public Tuple<Double[], Double> searchSpace(int numberOfSearches){
-		for(int i = 0; i < numberOfSearches; i++){
+	public double[] searchSpace(int numberOfSearches){
+		for(int i = 0; i < numberOfSearches; i++) {
 			for(int j = 0; j < swarm.length; j++) {
 				swarm[j].searchSpace();
 			}
 			for(int j = 0; j < swarm.length; j++){
-				if(swarm[j].getPersonalBest().getItemTwo() < globalBest.getItemTwo()) {
+				if(swarm[j].getPersonalBestResult()< globalBestResult) {
 					updateSwarmsGlobalBest();
-					globalBest = swarm[j].getPersonalBest();
-					System.out.println("[" + j + "] New Global Best " + Main.generateDesignString(globalBest.getItemOne()) + " with a LSS of: " + globalBest.getItemTwo() );
+					globalBestDesign = swarm[j].getPersonalBestDesign();
+					System.out.println("[" + j + "] New Global Best " + globalBestDesign + " with a LSS of: " + globalBestResult );
 				}
 			}
 			for(int j = 0; j < swarm.length; j++) {
 				swarm[j].calculateNewVelocity();
 			}
 		}
-		return globalBest;
+		return globalBestDesign;
 	}
 }

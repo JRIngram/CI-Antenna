@@ -17,12 +17,14 @@ import java.util.Random;
 public class Particle {
 	
 	private double[] velocity;
-	private Double[] position; //Design
-	private Tuple<Double[], Double> personalBest;
-	private Tuple<Double[], Double> globalBest;
+	private double[] position; //Design
+	private double[] personalBestDesign;
+	private double personalBestResult;
 	private double intertiaCoefficient;
 	private double cognitiveCoefficient;
 	private double socialCoefficient;
+	private double[] globalBestDesign;
+	private double globalBestResult;
 	private AntennaArray array;
 	
 	public Particle(AntennaArray array, int antennaNumber, double[] coefficients){
@@ -31,17 +33,17 @@ public class Particle {
 		while(!array.is_valid(initialPosition)) {
 			initialPosition = rs.randomGeneration(array, antennaNumber);
 		}
-		position = Main.convertDoublePrimitiveArrayToObject(initialPosition);
-		personalBest = new Tuple<Double[], Double>(position, array.evaluate(Main.convertDoubleObjectArrayToPrimitive(position)));
-		Double[] globalBestVector = {0.0, 0.0, 0.0};
-		globalBest = new Tuple<Double[], Double>(globalBestVector, 0.0);
+		position = initialPosition;
+		personalBestDesign = new double[position.length];
+		System.arraycopy(position, 0, personalBestDesign, 0, position.length);
+		personalBestResult = array.evaluate(personalBestDesign);
 		intertiaCoefficient = coefficients[0];
 		cognitiveCoefficient = coefficients[1];
 		socialCoefficient = coefficients[2];
 		velocity = new double[position.length];
 		this.array = array;
 		
-		Double[] secondPosition = Main.convertDoublePrimitiveArrayToObject(rs.randomGeneration(array, antennaNumber));
+		double[] secondPosition = rs.randomGeneration(array, antennaNumber);
 		
 		velocity = new double[position.length];
 		for(int i = 0; i < velocity.length; i++) {
@@ -55,14 +57,14 @@ public class Particle {
 	
 	public void searchSpace(){
 		for(int i = 0; i < velocity.length; i++) {
-			position[i] = position[i] + velocity[i];
+			position[i] = position[i] + velocity[i]; //Causes personal best to also be updated?
 		}
-		if(array.is_valid(Main.convertDoubleObjectArrayToPrimitive(position))) {
-			double newDesignValue = array.evaluate(Main.convertDoubleObjectArrayToPrimitive(position));
-			if(newDesignValue < personalBest.getItemTwo()) {
+		if(array.is_valid(position)) {
+			double newDesignValue = array.evaluate(position);
+			if(newDesignValue < personalBestResult) {
 				System.out.println("New Personal Best: " + newDesignValue);
-				personalBest.setItemOne(position);
-				personalBest.setItemTwo(newDesignValue);
+				personalBestDesign = position;
+				personalBestResult = newDesignValue;
 			}
 		}
 	}
@@ -90,34 +92,38 @@ public class Particle {
 	}
 	
 	private double[] calculateCognitiveAttraction() {
-		double[] cognitiveAttraction = new double[personalBest.getItemOne().length];
-		double[] personalBestPosition = Main.convertDoubleObjectArrayToPrimitive(personalBest.getItemOne());
+		double[] cognitiveAttraction = new double[personalBestDesign.length];
 		Random rng = new Random();
 		double randomness = rng.nextDouble();
-		for(int i = 0; i < personalBest.getItemOne().length; i++) {
-			double singleCognitiveAttraction = cognitiveCoefficient * randomness * (personalBestPosition[i] - position[i]);
+		for(int i = 0; i < personalBestDesign.length; i++) {
+			double singleCognitiveAttraction = cognitiveCoefficient * randomness * (personalBestDesign[i] - position[i]);
 			cognitiveAttraction[i] = singleCognitiveAttraction;
 		}
 		return cognitiveAttraction;
 	}
 	
 	private double[] calculateSocialAttraction() {
-		double[] socialAttraction = new double[globalBest.getItemOne().length];
-		double[] globalBestPosition = Main.convertDoubleObjectArrayToPrimitive(globalBest.getItemOne());
+		double[] socialAttraction = new double[globalBestDesign.length];
+		double[] globalBestPosition = globalBestDesign;
 		Random rng = new Random();
 		double randomness = rng.nextDouble();
-		for(int i = 0; i < globalBest.getItemOne().length; i++) {
+		for(int i = 0; i < globalBestDesign.length; i++) {
 			socialAttraction[i] = socialCoefficient * randomness * (globalBestPosition[i] - position[i]);
 		}
 		return socialAttraction;
 	}
 	
-	public Tuple<Double[], Double> getPersonalBest(){
-		return personalBest;
+	public double[] getPersonalBestDesign(){
+		return personalBestDesign;
 	}
 	
-	public void setGlobalBest(Tuple<Double[], Double> globalBest) {
-		this.globalBest = globalBest;
+	public double getPersonalBestResult() {
+		return personalBestResult;
+	}
+	
+	public void setGlobalBest(double[] design, double result) {
+		this.globalBestDesign = design;
+		this.globalBestResult = result;
 	}
 }
 

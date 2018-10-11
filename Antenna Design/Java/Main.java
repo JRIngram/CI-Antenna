@@ -9,8 +9,8 @@ public class Main {
 		System.out.println("Best random search is " + generateDesignString(bestRandom.getItemOne()) + " with a Peak Side Lobe Level of " + bestRandom.getItemTwo());
 		System.out.println("GENERATING PARTICLE");
 		double[] coefficients = {0.721,1.1193,1.1193};
-		ParticleSwarm swarm = new ParticleSwarm(ant, 3, coefficients, 10);
-		swarm.searchSpace(100);
+		ParticleSwarm swarm = new ParticleSwarm(ant, 3, coefficients, 1);
+		swarm.searchSpace(10000);
 		System.out.println("fin");
 	}
 	
