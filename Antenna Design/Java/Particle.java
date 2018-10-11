@@ -52,9 +52,6 @@ public class Particle {
 			if(array.is_valid(Main.convertDoubleObjectArrayToPrimitive(position))) {
 				System.out.println("[" + i + "] " + Main.generateDesignString(position));
 			}
-			if(i % 10000000 == 0) {
-				System.out.println("[" + i + "] " + Main.generateDesignString(position));
-			}
 		}
 		System.out.println("fin");
 	
