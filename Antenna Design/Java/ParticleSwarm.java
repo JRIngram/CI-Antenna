@@ -36,9 +36,6 @@ public class ParticleSwarm {
 				swarm[j].searchSpace();
 			}
 			for(int j = 0; j < swarm.length; j++){
-				if(array.is_valid(Main.convertDoubleObjectArrayToPrimitive(swarm[j].getPersonalBest().getItemOne()))){
-					System.out.println(swarm[j].getPersonalBest().getItemTwo() + " vs. " + globalBest.getItemTwo());	
-				}
 				if(swarm[j].getPersonalBest().getItemTwo() < globalBest.getItemTwo()) {
 					updateSwarmsGlobalBest();
 					globalBest = swarm[j].getPersonalBest();

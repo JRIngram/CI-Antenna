@@ -10,7 +10,7 @@ public class Main {
 		System.out.println("GENERATING PARTICLE");
 		double[] coefficients = {0.721,1.1193,1.1193};
 		ParticleSwarm swarm = new ParticleSwarm(ant, 3, coefficients, 10);
-		swarm.searchSpace(10);
+		swarm.searchSpace(100);
 		System.out.println("fin");
 	}
 	
