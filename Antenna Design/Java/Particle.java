@@ -46,18 +46,15 @@ public class Particle {
 				velocity[i] = 0.0;
 			}
 		}
-		for(int i = 0; i < 100; i++) {
-			searchSpace();
-			velocity = calculateNewVelocity();
-			if(array.is_valid(Main.convertDoubleObjectArrayToPrimitive(position))) {
-				System.out.println("[" + i + "] " + Main.generateDesignString(position));
-			}
-		}
-		System.out.println("fin");
 	
 	}
 	
-	private void searchSpace(){
+	private void updatePosition(){
+		searchSpace();
+		velocity = calculateNewVelocity();
+	}
+	
+	public void searchSpace(){
 		for(int i = 0; i < velocity.length; i++) {
 			position[i] = position[i] + velocity[i];
 		}
@@ -114,8 +111,14 @@ public class Particle {
 		}
 		return socialAttraction;
 	}
-
 	
+	public Tuple<Double[], Double> getPersonalBest(){
+		return personalBest;
+	}
+	
+	public void setGlobalBest(Tuple<Double[], Double> globalBest) {
+		this.globalBest = globalBest;
+	}
 }
 
 
