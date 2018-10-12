@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 /*
@@ -17,14 +18,18 @@ import java.util.Random;
 public class Particle {
 	
 	private double[] velocity;
-	private double[] position; //Design
+	private double[] position;
+	
 	private double[] personalBestDesign;
 	private double personalBestResult;
+	
 	private double intertiaCoefficient;
 	private double cognitiveCoefficient;
 	private double socialCoefficient;
+	
 	private double[] globalBestDesign;
 	private double globalBestResult;
+	
 	private AntennaArray array;
 	
 	public Particle(AntennaArray array, int antennaNumber, double[] coefficients){
@@ -34,8 +39,7 @@ public class Particle {
 			initialPosition = rs.randomGeneration(array, antennaNumber);
 		}
 		position = initialPosition;
-		personalBestDesign = new double[position.length];
-		System.arraycopy(position, 0, personalBestDesign, 0, position.length);
+		personalBestDesign = Arrays.copyOf(position, position.length);
 		personalBestResult = array.evaluate(personalBestDesign);
 		intertiaCoefficient = coefficients[0];
 		cognitiveCoefficient = coefficients[1];
