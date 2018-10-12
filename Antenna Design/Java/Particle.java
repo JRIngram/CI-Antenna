@@ -79,7 +79,7 @@ public class Particle {
 		double[] socialAttractionVector = calculateSocialAttraction();
 		double[] newVelocity = new double[velocity.length];
 		for(int i = 0; i < velocity.length; i++) {
-			newVelocity[i] = newInertiaVector[i] + cognitiveAttractionVector[i] + socialAttractionVector[i];
+			velocity[i] = newInertiaVector[i] + cognitiveAttractionVector[i] + socialAttractionVector[i];
 			if(i + 1 == velocity.length) {
 				newVelocity[i] = 0.0;
 			}

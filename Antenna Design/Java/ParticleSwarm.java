@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class ParticleSwarm {
 	
@@ -41,15 +42,16 @@ public class ParticleSwarm {
 			}
 			for(int j = 0; j < swarm.length; j++){
 				if(swarm[j].getPersonalBestResult()< globalBestResult) {
+					globalBestDesign = Arrays.copyOf(swarm[j].getPersonalBestDesign(), swarm[j].getPersonalBestDesign().length);
+					globalBestResult = swarm[j].getPersonalBestResult();
 					updateSwarmsGlobalBest();
-					globalBestDesign = swarm[j].getPersonalBestDesign();
-					System.out.println("[" + j + "] New Global Best " + globalBestDesign + " with a LSS of: " + globalBestResult );
 				}
 			}
 			for(int j = 0; j < swarm.length; j++) {
 				swarm[j].calculateNewVelocity();
 			}
 		}
+		System.out.println("Finished with a global best of: " + globalBestResult);
 		return globalBestDesign;
 	}
 }
