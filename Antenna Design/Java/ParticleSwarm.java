@@ -41,7 +41,7 @@ public class ParticleSwarm {
 				swarm[j].searchSpace();
 			}
 			for(int j = 0; j < swarm.length; j++){
-				if(swarm[j].getPersonalBestResult()< globalBestResult) {
+				if(swarm[j].getPersonalBestResult()< globalBestResult && array.is_valid(swarm[j].getPersonalBestDesign())) {
 					globalBestDesign = Arrays.copyOf(swarm[j].getPersonalBestDesign(), swarm[j].getPersonalBestDesign().length);
 					globalBestResult = swarm[j].getPersonalBestResult();
 					updateSwarmsGlobalBest();

@@ -4,13 +4,14 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		RandomSearch rs = new RandomSearch();
-		AntennaArray ant = new AntennaArray(3, 90.0);
-		Tuple<Double[], Double> bestRandom = rs.searchNTimes(100, ant, 3);
+		int antennaNumber = 5;
+		AntennaArray ant = new AntennaArray(antennaNumber, 90.0);
+		Tuple<Double[], Double> bestRandom = rs.searchNTimes(100, ant, antennaNumber);
 		System.out.println("Best random search is " + generateDesignString(bestRandom.getItemOne()) + " with a Peak Side Lobe Level of " + bestRandom.getItemTwo());
 		System.out.println("GENERATING PARTICLE");
 		double[] coefficients = {0.721,1.1193,1.1193};
-		ParticleSwarm swarm = new ParticleSwarm(ant, 3, coefficients, 1);
-		swarm.searchSpace(10000);
+		ParticleSwarm swarm = new ParticleSwarm(ant, antennaNumber, coefficients, 10);
+		swarm.searchSpace(100);
 		System.out.println("fin");
 	}
 	
