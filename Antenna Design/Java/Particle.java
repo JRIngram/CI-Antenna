@@ -66,7 +66,6 @@ public class Particle {
 		if(array.is_valid(position)) {
 			double newDesignValue = array.evaluate(position);
 			if(newDesignValue < personalBestResult) {
-				System.out.println("New Personal Best: " + newDesignValue);
 				personalBestDesign = position;
 				personalBestResult = newDesignValue;
 			}

@@ -17,13 +17,14 @@ public class ParticleSwarm {
 		
 		globalBestDesign = swarm[0].getPersonalBestDesign();
 		globalBestResult = swarm[0].getPersonalBestResult();
-		System.out.println("[0] New Global Best " + globalBestDesign + " with a LSS of: " + globalBestResult );
+		System.out.println("[0] New Global Best " + globalBestDesign.toString() + " with a LSS of: " + globalBestResult );
 		
 		//Checks which Swarm has the initial best.
 		for(int i = 0; i < size; i++){
 			if(swarm[i].getPersonalBestResult() < globalBestResult) {
 				globalBestDesign = swarm[i].getPersonalBestDesign();
-				System.out.println("[0] New Global Best " + globalBestDesign + " with a LSS of: " + globalBestResult );
+				globalBestResult = swarm[i].getPersonalBestResult();
+				System.out.println("[0] New Global Best " + globalBestDesign.toString() + " with a LSS of: " + globalBestResult );
 			}
 		}
 		updateSwarmsGlobalBest();
@@ -44,6 +45,7 @@ public class ParticleSwarm {
 				if(swarm[j].getPersonalBestResult()< globalBestResult && array.is_valid(swarm[j].getPersonalBestDesign())) {
 					globalBestDesign = Arrays.copyOf(swarm[j].getPersonalBestDesign(), swarm[j].getPersonalBestDesign().length);
 					globalBestResult = swarm[j].getPersonalBestResult();
+					System.out.println("[" + i + "] New Global Best " + globalBestDesign.toString() + " with a LSS of: " + globalBestResult );
 					updateSwarmsGlobalBest();
 				}
 			}
