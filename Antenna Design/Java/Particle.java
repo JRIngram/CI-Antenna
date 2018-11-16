@@ -32,6 +32,12 @@ public class Particle {
 	
 	private AntennaArray array;
 	
+	/**
+	 * Creates a particle in a random position / random design.
+	 * @param array The array to solve the problem for
+	 * @param antennaNumber The number of antennae on the array
+	 * @param coefficients The coefficients for calculating the new positions.
+	 */
 	public Particle(AntennaArray array, int antennaNumber, double[] coefficients){
 		RandomSearch rs = new RandomSearch();
 		double[] initialPosition = rs.randomGeneration(array, antennaNumber);
@@ -56,12 +62,14 @@ public class Particle {
 				velocity[i] = 0.0;
 			}
 		}
-	
 	}
 	
+	/**
+	 * Updates the particle's position and checks if it's better than the previous position.
+	 */
 	public void searchSpace(){
 		for(int i = 0; i < velocity.length; i++) {
-			position[i] = position[i] + velocity[i]; //Causes personal best to also be updated?
+			position[i] = position[i] + velocity[i];
 		}
 		if(array.is_valid(position)) {
 			double newDesignValue = array.evaluate(position);
@@ -72,6 +80,12 @@ public class Particle {
 		}
 	}
 	
+	/**
+	 * Calculates the new velocity by summing inertia, social attraction and cognitive attraction
+	 * @see calculateInertia
+	 * @see calculateCognitiveAttraction
+	 * @see calculateSocialAttraction
+	 */
 	public double[] calculateNewVelocity() {
 		double[] newInertiaVector = calculateInertia();
 		double[] cognitiveAttractionVector = calculateCognitiveAttraction();
@@ -86,6 +100,9 @@ public class Particle {
 		return newVelocity;
 	}
 	
+	/**
+	 * Calculates the affect of the current velocity on how it moves to a new position.
+	 **/
 	private double[] calculateInertia() {
 		double[] newInertia = new double[velocity.length];	
 		for(int i = 0; i < velocity.length - 1; i++) {
@@ -94,6 +111,9 @@ public class Particle {
 		return newInertia;
 	}
 	
+	/**
+	 *	Calculates the attraction to current personal best with some degree of randomness.
+	 */
 	private double[] calculateCognitiveAttraction() {
 		double[] cognitiveAttraction = new double[personalBestDesign.length];
 		Random rng = new Random();
@@ -105,6 +125,9 @@ public class Particle {
 		return cognitiveAttraction;
 	}
 	
+	/**
+	 * Calculates the attraction to the global best with some degree of randomness.
+	 */
 	private double[] calculateSocialAttraction() {
 		double[] socialAttraction = new double[globalBestDesign.length];
 		double[] globalBestPosition = globalBestDesign;
@@ -116,14 +139,25 @@ public class Particle {
 		return socialAttraction;
 	}
 	
+	/**
+	 * Returns personal best design
+	 */
 	public double[] getPersonalBestDesign(){
 		return personalBestDesign;
 	}
 	
+	/**
+	 * Returns personal best result
+	 */
 	public double getPersonalBestResult() {
 		return personalBestResult;
 	}
 	
+	/**
+	 * Sets global best solution.
+	 * @param design The current design of the global best
+	 * @param result The current result of the global best
+	 */
 	public void setGlobalBest(double[] design, double result) {
 		this.globalBestDesign = design;
 		this.globalBestResult = result;
