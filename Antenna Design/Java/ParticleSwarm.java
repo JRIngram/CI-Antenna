@@ -7,6 +7,13 @@ public class ParticleSwarm {
 	private double globalBestResult;
 	private AntennaArray array;
 	
+	/**
+	 * Creates a particle swarm of a user-defined size
+	 * @param array The array to solve the problem for
+	 * @param antennaNumber The number of antennae
+	 * @param coefficients The coefficients for calculating the particle's new positions.
+	 * @param size The size of the particle swarms
+	 */
 	public ParticleSwarm(AntennaArray array, int antennaNumber, double[] coefficients, int size) {
 		swarm = new Particle[size];
 		this.array = array;
@@ -30,17 +37,27 @@ public class ParticleSwarm {
 		updateSwarmsGlobalBest();
 	}
 	
+	/**
+	 * Updates the gloabl best of the swarm
+	 */
 	private void updateSwarmsGlobalBest() {
 		for(int i = 0; i < swarm.length; i++){
 			swarm[i].setGlobalBest(globalBestDesign, globalBestResult);
 		}
 	}
 	
+	/**
+	 * Causes the particles to search the state space to find the best position
+	 * @param numberOfSearches
+	 * @return
+	 */
 	public double[] searchSpace(int numberOfSearches){
 		for(int i = 0; i < numberOfSearches; i++) {
+			//Each particle searches the state space
 			for(int j = 0; j < swarm.length; j++) {
 				swarm[j].searchSpace();
 			}
+			//Checks all particles and updates the global best
 			for(int j = 0; j < swarm.length; j++){
 				if(swarm[j].getPersonalBestResult()< globalBestResult && array.is_valid(swarm[j].getPersonalBestDesign())) {
 					globalBestDesign = Arrays.copyOf(swarm[j].getPersonalBestDesign(), swarm[j].getPersonalBestDesign().length);
@@ -49,6 +66,7 @@ public class ParticleSwarm {
 					updateSwarmsGlobalBest();
 				}
 			}
+			//Calculates new velocity for all particles based on global best.
 			for(int j = 0; j < swarm.length; j++) {
 				swarm[j].calculateNewVelocity();
 			}
