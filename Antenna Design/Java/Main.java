@@ -6,11 +6,11 @@ public class Main {
 		RandomSearch rs = new RandomSearch();
 		int antennaNumber = 5;
 		AntennaArray ant = new AntennaArray(antennaNumber, 90.0);
-		Tuple<Double[], Double> bestRandom = rs.searchNTimes(100, ant, antennaNumber);
+		Tuple<Double[], Double> bestRandom = rs.searchNTimes(25, ant, antennaNumber);
 		System.out.println("Best random search is " + generateDesignString(bestRandom.getItemOne()) + " with a Peak Side Lobe Level of " + bestRandom.getItemTwo());
 		System.out.println("***************");
 		double[] coefficients = {0.721, 1.1193, 1.1193};
-		ParticleSwarm swarm = new ParticleSwarm(ant, antennaNumber, coefficients, 10);
+		ParticleSwarm swarm = new ParticleSwarm(ant, antennaNumber, coefficients, 25);
 		swarm.searchSpace(100);
 		System.out.println("fin");
 	}
